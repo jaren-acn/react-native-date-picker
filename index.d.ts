@@ -103,6 +103,9 @@ export interface DatePickerProps extends ViewProps {
 
   /** Modal color theme on iOS. Defaults to 'auto' */
   theme?: 'light' | 'dark' | 'auto'
+  
+  /** calendar type 
+  calendar?: 'islamic' | 'gregorian'
 }
 
 export default class DatePicker extends Component<DatePickerProps> {}
