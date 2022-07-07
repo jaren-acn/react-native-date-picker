@@ -49,7 +49,19 @@ RCT_EXPORT_VIEW_PROPERTY(onChange, RCTBubblingEventBlock)
 RCT_REMAP_VIEW_PROPERTY(mode, datePickerMode, UIDatePickerMode)
 RCT_REMAP_VIEW_PROPERTY(timeZoneOffsetInMinutes, timeZone, NSTimeZone)
 
-
+RCT_CUSTOM_VIEW_PROPERTY(calendar, NSString, DatePicker)
+{
+    NSCalendarIdentifier calendarType = NSCalendarIdentifierGregorian;
+    NSString* type = json;
+    if ([type  isEqual: @"islamic"]) {
+        calendarType = NSCalendarIdentifierIslamic;
+    }
+    if ([type  isEqual: @"gregorian"]) {
+        calendarType = NSCalendarIdentifierGregorian;
+    }
+    view.calendar = [NSCalendar calendarWithIdentifier:calendarType];
+}
+  
 RCT_CUSTOM_VIEW_PROPERTY(textColor, NSString, DatePicker)
 {
     [view setTextColorProp:[RCTConvert NSString:json]];
