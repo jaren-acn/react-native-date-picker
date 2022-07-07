@@ -37,5 +37,6 @@ export default {
   timeZoneOffsetInMinutes: PropTypes.number,
   testID: PropTypes.string,
   style: PropTypes.any,
+  calendar: PropTypes.oneOf(['islamic', 'gregorian']),
   ...modalPropTypes,
 }
