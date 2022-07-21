@@ -1,6 +1,9 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
+
 
 import com.henninghall.date_picker.LocaleUtils;
 import com.henninghall.date_picker.pickers.Picker;
@@ -8,17 +11,18 @@ import com.henninghall.date_picker.State;
 import com.henninghall.date_picker.models.Mode;
 import com.henninghall.date_picker.Utils;
 
-import java.text.SimpleDateFormat;
+import android.icu.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DayWheel extends Wheel {
 
     private String todayValue;
-    private static int defaultNumberOfDays = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR);
+    private static int defaultNumberOfDays = android.icu.util.Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR);
     private HashMap<String, String> displayValues;
 
     public DayWheel(Picker picker, State state) {
@@ -30,8 +34,8 @@ public class DayWheel extends Wheel {
         ArrayList<String> values = new ArrayList<>();
         displayValues = new HashMap<>();
 
-        Calendar cal = getStartCal();
-        Calendar endCal = getEndCal();
+        android.icu.util.Calendar cal = getStartCal();
+        android.icu.util.Calendar endCal = getEndCal();
 
         while (!cal.after(endCal)){
             String value = getValue(cal);
@@ -44,55 +48,55 @@ public class DayWheel extends Wheel {
         return values;
     }
 
-    private Calendar getStartCal(){
-        Calendar cal;
-        Calendar max = state.getMaximumDate();
-        Calendar min = state.getMinimumDate();
+    private android.icu.util.Calendar getStartCal(){
+        android.icu.util.Calendar cal;
+        android.icu.util.Calendar max = state.getMaximumDate();
+        android.icu.util.Calendar min = state.getMinimumDate();
         if (min != null) {
-            cal = (Calendar) min.clone();
+            cal = (android.icu.util.Calendar) min.clone();
             resetToMidnight(cal);
         } else if (max != null) {
-            cal = (Calendar) max.clone();
+            cal = (android.icu.util.Calendar) max.clone();
             resetToMidnight(cal);
             cal.add(Calendar.DATE, -cal.getActualMaximum(Calendar.DAY_OF_YEAR) / 2);
         } else {
-            cal = (Calendar) getInitialDate().clone();
+            cal = (android.icu.util.Calendar) getInitialDate().clone();
             cal.add(Calendar.DATE, -defaultNumberOfDays / 2);
         }
         return cal;
     }
 
-    private Calendar getEndCal(){
-        Calendar cal;
-        Calendar max = state.getMaximumDate();
-        Calendar min = state.getMinimumDate();
+    private android.icu.util.Calendar getEndCal(){
+        android.icu.util.Calendar cal;
+        android.icu.util.Calendar max = state.getMaximumDate();
+        android.icu.util.Calendar min = state.getMinimumDate();
         if (max != null) {
-            cal = (Calendar) max.clone();
+            cal = (android.icu.util.Calendar) max.clone();
             resetToMidnight(cal);
         } else if (min != null) {
-            cal = (Calendar) min.clone();
+            cal = (android.icu.util.Calendar) min.clone();
             resetToMidnight(cal);
             cal.add(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_YEAR) / 2);
         } else {
-            cal = (Calendar) getInitialDate().clone();
+            cal = (android.icu.util.Calendar) getInitialDate().clone();
             cal.setTime(new Date());
             cal.add(Calendar.DATE, defaultNumberOfDays / 2);
         }
         return cal;
     }
 
-    private void resetToMidnight(Calendar cal){
+    private void resetToMidnight(android.icu.util.Calendar cal){
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
     }
 
-    private String getValue(Calendar cal){
+    private String getValue(android.icu.util.Calendar cal){
         return format.format(cal.getTime());
     }
 
-    private String getDisplayValue(Calendar cal){
+    private String getDisplayValue(android.icu.util.Calendar cal){
         return getDisplayValueFormat().format(cal.getTime());
     }
 
@@ -117,7 +121,7 @@ public class DayWheel extends Wheel {
 
     @Override
     public String getFormatPattern() {
-       return LocaleUtils.getDatePattern(state.getLocale())
+       return LocaleUtils.getDatePattern(state.getLocale().toLocale())
                .replace("EEEE", "EEE")
                .replace("MMMM", "MMM");
     }
@@ -136,7 +140,7 @@ public class DayWheel extends Wheel {
     }
 
     private String toTodayString(String value) {
-        String todayString = Utils.printToday(state.getLocale());
+        String todayString = Utils.printToday(state.getLocale().toLocale());
         boolean shouldBeCapitalized = Character.isUpperCase(value.charAt(0));
         return shouldBeCapitalized
                 ? Utils.capitalize(todayString)

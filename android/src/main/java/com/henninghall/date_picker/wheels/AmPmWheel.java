@@ -1,6 +1,8 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 import com.henninghall.date_picker.pickers.Picker;
 import com.henninghall.date_picker.State;
@@ -17,9 +19,10 @@ public class AmPmWheel extends Wheel {
         super(picker, state);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
-        Calendar cal = Calendar.getInstance();
+        android.icu.util.Calendar cal = android.icu.util.Calendar.getInstance();
         // Getting the hours from a date that will never have daylight saving to be sure
         // cal.add() will work properly.
         cal.set(2000,0,0,0,0,0);

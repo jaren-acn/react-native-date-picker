@@ -1,9 +1,12 @@
-package com.henninghall.date_picker;
+ package com.henninghall.date_picker;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.RequiresApi;
 
 import com.facebook.react.bridge.Dynamic;
 import com.henninghall.date_picker.props.DividerHeightProp;
@@ -37,6 +40,7 @@ public class PickerView extends RelativeLayout {
         this.layoutParams = layoutParams;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void update() {
 
         if (didUpdate(VariantProp.name)) {
@@ -83,7 +87,7 @@ public class PickerView extends RelativeLayout {
         }
 
         if (didUpdate(LocaleProp.name)) {
-            Accessibility.setLocale(state.getLocale());
+            Accessibility.setLocale(state.getLocale().toLocale());
         }
 
         uiManager.setWheelsToDate();

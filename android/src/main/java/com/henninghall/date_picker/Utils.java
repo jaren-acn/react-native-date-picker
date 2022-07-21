@@ -1,6 +1,9 @@
 package com.henninghall.date_picker;
 
 
+import android.icu.util.Calendar;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 
@@ -12,8 +15,8 @@ import net.time4j.PrettyTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -27,10 +30,11 @@ public class Utils {
         return PrettyTime.of(locale).printToday();
     }
 
-    public static Calendar isoToCalendar(String dateString, TimeZone timeZone)  {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static android.icu.util.Calendar isoToCalendar(String dateString, android.icu.util.TimeZone timeZone)  {
         if(dateString == null) return null;
         try {
-            Calendar calendar = Calendar.getInstance(timeZone);
+            android.icu.util.Calendar calendar = android.icu.util.Calendar.getInstance(timeZone);
             calendar.setTime(getIsoUTCFormat().parse(dateString));
             return calendar;
         } catch (ParseException e) {
@@ -39,17 +43,23 @@ public class Utils {
         }
     }
 
-    public static String dateToIso(Calendar date) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static String dateToIso(android.icu.util.Calendar date) {
         return getIsoUTCFormat().format(date.getTime());
     }
 
-    public static boolean isToday(Calendar cal){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean isToday(android.icu.util.Calendar cal){
         return DateUtils.isToday(cal.getTimeInMillis());
     }
 
-    public static Calendar getTruncatedCalendarOrNull(Calendar cal) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static Calendar getTruncatedCalendarOrNull(android.icu.util.Calendar cal) {
         try {
-            return org.apache.commons.lang3.time.DateUtils.truncate(cal, Calendar.MINUTE);
+            Date date = org.apache.commons.lang3.time.DateUtils.truncate(cal, Calendar.MINUTE);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar;
         } catch (Exception e){
             return null;
         }

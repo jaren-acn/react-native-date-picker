@@ -1,21 +1,25 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.icu.util.IslamicCalendar;
+import android.icu.util.ULocale;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.view.View;
 
 import com.henninghall.date_picker.models.Mode;
 import com.henninghall.date_picker.pickers.Picker;
 import com.henninghall.date_picker.State;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 public abstract class Wheel {
 
     protected final State state;
-    private Calendar userSetValue;
+    private android.icu.util.Calendar userSetValue;
 
     public abstract boolean visible();
     public abstract boolean wrapSelectorWheel();
@@ -29,30 +33,35 @@ public abstract class Wheel {
 
     private ArrayList<String> values = new ArrayList<>();
     public Picker picker;
-    public SimpleDateFormat format;
+    public android.icu.text.SimpleDateFormat format;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Wheel(Picker picker, State state) {
         this.state = state;
         this.picker = picker;
-        this.format = new SimpleDateFormat(getFormatPattern(), state.getLocale());
+        this.format = new android.icu.text.SimpleDateFormat(getFormatPattern(), state.getLocale());
         picker.setTextAlign(getTextAlign());
         picker.setWrapSelectorWheel(wrapSelectorWheel());
     }
 
-    private int getIndexOfDate(Calendar date){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private int getIndexOfDate(android.icu.util.Calendar date){
         format.setTimeZone(state.getTimeZone());
         return values.indexOf(format.format(date.getTime()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void animateToDate(Calendar date) {
         picker.smoothScrollToValue(getIndexOfDate(date));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public String getValue() {
         if(!visible()) return format.format(userSetValue.getTime());
         return getValueAtIndex(getIndex());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public String getPastValue(int subtractIndex) {
         if(!visible()) return format.format(userSetValue.getTime());
         int size = values.size();
@@ -69,7 +78,8 @@ public abstract class Wheel {
         return values.get(index);
     }
 
-    public void setValue(Calendar date) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setValue(android.icu.util.Calendar date) {
         format.setTimeZone(state.getTimeZone());
         this.userSetValue = date;
         int index = getIndexOfDate(date);
@@ -81,8 +91,9 @@ public abstract class Wheel {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void refresh() {
-        this.format = new SimpleDateFormat(getFormatPattern(), state.getLocale());
+        this.format = new android.icu.text.SimpleDateFormat(getFormatPattern(), state.getLocale());
         if (!this.visible()) return;
         init();
     }
@@ -112,22 +123,27 @@ public abstract class Wheel {
         picker.setVisibility(visibility);
     }
 
-    private SimpleDateFormat getFormat(Locale locale) {
-        return new SimpleDateFormat(this.getFormatPattern(), locale);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private SimpleDateFormat getFormat(ULocale locale) {
+        return new android.icu.text.SimpleDateFormat(this.getFormatPattern(), locale);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     String getLocaleString(Calendar cal) {
         return getString(cal, this.state.getLocale());
     }
 
-    private String getString(Calendar cal, Locale locale){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String getString(Calendar cal, ULocale locale){
         return getFormat(locale).format(cal.getTime());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setHorizontalPadding(){
         picker.setItemPaddingHorizontal(getHorizontalPadding());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public int getHorizontalPadding() {
         Mode mode = state.getMode();
         if(state.derived.hasOnly2Wheels()) return 10;

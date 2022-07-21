@@ -1,5 +1,11 @@
 package com.henninghall.date_picker;
 
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+import android.icu.util.ULocale;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
+
 import com.facebook.react.bridge.Dynamic;
 import com.henninghall.date_picker.models.Is24HourSource;
 import com.henninghall.date_picker.models.Mode;
@@ -19,10 +25,7 @@ import com.henninghall.date_picker.props.Prop;
 import com.henninghall.date_picker.props.TextColorProp;
 import com.henninghall.date_picker.props.UtcProp;
 
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class State {
 
@@ -86,30 +89,34 @@ public class State {
         return (int) minuteIntervalProp.getValue();
     }
 
-    public Locale getLocale() {
-        return (Locale) localeProp.getValue();
+    public ULocale getLocale() {
+        return (ULocale)localeProp.getValue();
     }
 
-    public Calendar getMinimumDate() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public android.icu.util.Calendar getMinimumDate() {
         DateBoundary db = new DateBoundary(getTimeZone(), (String) minimumDateProp.getValue());
         return db.get();
     }
 
-    public Calendar getMaximumDate() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public android.icu.util.Calendar getMaximumDate() {
         DateBoundary db = new DateBoundary(getTimeZone(), (String) maximumDateProp.getValue());
         return db.get();
     }
 
-    public TimeZone getTimeZone() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public android.icu.util.TimeZone getTimeZone() {
         boolean utc = (boolean) utcProp.getValue();
-        return utc ? TimeZone.getTimeZone("UTC") : TimeZone.getDefault();
+        return utc ? android.icu.util.TimeZone.getTimeZone("UTC") : TimeZone.getDefault();
     }
 
     public String getIsoDate() {
         return (String) dateProp.getValue();
     }
 
-    public Calendar getDate() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public android.icu.util.Calendar getDate() {
         return Utils.isoToCalendar(getIsoDate(), getTimeZone());
     }
 

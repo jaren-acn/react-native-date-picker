@@ -1,28 +1,34 @@
 package com.henninghall.date_picker.props;
 
+import android.icu.util.ULocale;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
 import com.facebook.react.bridge.Dynamic;
-import com.henninghall.date_picker.LocaleUtils;
 
 
 import java.util.Locale;
 
-public class LocaleProp extends Prop<Locale> {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class LocaleProp extends Prop<ULocale> {
     public static final String name = "locale";
     private String languageTag = getDefaultLanguageTag();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public LocaleProp(){
         super(getDefaultLocale());
     }
 
-    static private Locale getDefaultLocale(){
-        return LocaleUtils.getLocale(getDefaultLanguageTag());
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    static private ULocale getDefaultLocale(){
+        return ULocale.getDefault();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     static private String getDefaultLanguageTag(){
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                ? Locale.getDefault().toLanguageTag().replace('-', '_')
+                ? ULocale.getDefault().toLanguageTag()
                 : "en";
     }
 
@@ -30,10 +36,14 @@ public class LocaleProp extends Prop<Locale> {
         return languageTag;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+
+
+
     @Override
-    public Locale toValue(Dynamic value){
+    public ULocale toValue(Dynamic value){
         this.languageTag = value.asString().replace('-','_');
-        return LocaleUtils.getLocale(languageTag);
+        return new ULocale(value.asString());
     }
 
 }

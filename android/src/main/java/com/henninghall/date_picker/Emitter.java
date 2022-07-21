@@ -1,5 +1,8 @@
 package com.henninghall.date_picker;
 
+import android.icu.util.Calendar;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -7,7 +10,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-import java.util.Calendar;
 
 public class Emitter {
 
@@ -19,6 +21,7 @@ public class Emitter {
         return DatePickerPackage.context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void onDateChange(Calendar date, String displayValueString, View view) {
         WritableMap event = Arguments.createMap();
         String dateString = Utils.dateToIso(date);
