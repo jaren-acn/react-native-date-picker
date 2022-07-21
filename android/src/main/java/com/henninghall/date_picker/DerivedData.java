@@ -1,17 +1,16 @@
 package com.henninghall.date_picker;
 
-import android.text.format.DateFormat;
+import android.icu.util.Calendar;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
-import android.util.TimeUtils;
 
 import com.henninghall.date_picker.models.Mode;
 import com.henninghall.date_picker.models.Variant;
 import com.henninghall.date_picker.models.WheelType;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 
 import static com.henninghall.date_picker.models.Is24HourSource.*;
 
@@ -22,6 +21,7 @@ public class DerivedData {
         this.state = state;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<WheelType> getVisibleWheels() {
         ArrayList<WheelType> visibleWheels = new ArrayList<>();
         Mode mode = state.getMode();
@@ -50,6 +50,7 @@ public class DerivedData {
         return visibleWheels;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<WheelType> getOrderedVisibleWheels() {
         ArrayList<WheelType> orderedWheels = getOrderedWheels();
         ArrayList<WheelType> visibleWheels = getVisibleWheels();
@@ -60,8 +61,9 @@ public class DerivedData {
         return visibleOrderedWheels;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private ArrayList<WheelType> getOrderedWheels() {
-        String dateTimePatternOld = LocaleUtils.getDateTimePattern(state.getLocale());
+        String dateTimePatternOld = LocaleUtils.getDateTimePattern(state.getLocale().toLocale());
         String dateTimePattern = dateTimePatternOld.replaceAll("\\('(.+?)'\\)","\\${$1}")
                 .replaceAll("'.+?'","")
                 .replaceAll("\\$\\{(.+?)\\}","('$1')");
@@ -118,16 +120,19 @@ public class DerivedData {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean usesAmPm(){
-        if(state.getIs24HourSource() == locale) return LocaleUtils.localeUsesAmPm(state.getLocale());
+        if(state.getIs24HourSource() == locale) return LocaleUtils.localeUsesAmPm(state.getLocale().toLocale());
         return Utils.deviceUsesAmPm();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean hasOnly2Wheels(){
         return state.getMode() == Mode.time && !usesAmPm();
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public String getLastDate() {
         Calendar lastSelectedDate = state.getLastSelectedDate();
         String initialDate = state.getIsoDate();

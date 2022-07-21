@@ -1,6 +1,8 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 import com.henninghall.date_picker.pickers.Picker;
 import com.henninghall.date_picker.State;
@@ -16,9 +18,10 @@ public class MinutesWheel extends Wheel {
         super(picker, id);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
-        Calendar cal = Calendar.getInstance();
+        android.icu.util.Calendar cal = android.icu.util.Calendar.getInstance();
         ArrayList<String> values = new ArrayList<>();
 
         cal.set(Calendar.MINUTE, 0);

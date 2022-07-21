@@ -1,5 +1,9 @@
 package com.henninghall.date_picker.ui;
 
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.view.View;
 
 import com.henninghall.date_picker.State;
@@ -12,8 +16,6 @@ import com.henninghall.date_picker.wheelFunctions.UpdateVisibility;
 import com.henninghall.date_picker.wheelFunctions.HorizontalPadding;
 import com.henninghall.date_picker.wheels.Wheel;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class UIManager {
     private final State state;
@@ -55,6 +57,7 @@ public class UIManager {
         wheels.applyOnAll(new Refresh());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setWheelsToDate(){
         wheels.applyOnAll(new SetDate(state.getDate()));
     }
@@ -64,6 +67,7 @@ public class UIManager {
         wheelScroller.scroll(wheel, scrollTimes);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     SimpleDateFormat getDateFormat() {
         return new SimpleDateFormat(wheels.getFormatPattern(), state.getLocale());
     }
@@ -72,7 +76,7 @@ public class UIManager {
         return wheels.getDisplayValue();
     }
 
-    void animateToDate(Calendar date) {
+    void animateToDate(android.icu.util.Calendar date) {
         wheels.applyOnInVisible(new SetDate(date));
         wheels.applyOnVisible(new AnimateToDate(date));
     }

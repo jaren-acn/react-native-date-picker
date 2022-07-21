@@ -1,15 +1,18 @@
 package com.henninghall.date_picker;
 
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 public class DateBoundary {
-    private Calendar date;
+    private android.icu.util.Calendar date;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     DateBoundary(TimeZone timezone, String date) {
         if(date == null) return;
-        Calendar cal = Utils.isoToCalendar(date, timezone);
+        android.icu.util.Calendar cal = Utils.isoToCalendar(date, timezone);
         this.date = Utils.getTruncatedCalendarOrNull(cal);
     }
 

@@ -1,5 +1,10 @@
 package com.henninghall.date_picker.ui;
 
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import android.view.View;
 
 import com.henninghall.date_picker.Emitter;
@@ -7,9 +12,6 @@ import com.henninghall.date_picker.State;
 import com.henninghall.date_picker.wheels.Wheel;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class WheelChangeListenerImpl implements WheelChangeListener {
 
@@ -25,6 +27,7 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
         this.rootView = rootView;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private SimpleDateFormat getDateFormat(){
         TimeZone timeZone = state.getTimeZone();
         SimpleDateFormat dateFormat = uiManager.getDateFormat();
@@ -32,6 +35,7 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
         return dateFormat;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onChange(Wheel picker) {
         if(wheels.hasSpinningWheel()) return;
@@ -47,13 +51,13 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
         Calendar selectedDate = getSelectedDate();
         if(selectedDate == null) return;
 
-        Calendar minDate = state.getMinimumDate();
+        android.icu.util.Calendar minDate = state.getMinimumDate();
         if (minDate != null && selectedDate.before(minDate)) {
             uiManager.animateToDate(minDate);
             return;
         }
 
-        Calendar maxDate = state.getMaximumDate();
+        android.icu.util.Calendar maxDate = state.getMaximumDate();
         if (maxDate != null && selectedDate.after(maxDate)) {
             uiManager.animateToDate(maxDate);
             return;
@@ -66,6 +70,7 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
     }
 
     // Example: Jan 1 returns true, April 31 returns false.
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private boolean dateExists(){
         SimpleDateFormat dateFormat = getDateFormat();
         String toParse = wheels.getDateTimeString();
@@ -78,6 +83,7 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private Calendar getSelectedDate(){
         SimpleDateFormat dateFormat = getDateFormat();
         String toParse = wheels.getDateTimeString();
@@ -93,6 +99,7 @@ public class WheelChangeListenerImpl implements WheelChangeListener {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private Calendar getClosestExistingDateInPast(){
         SimpleDateFormat dateFormat = getDateFormat();
         dateFormat.setLenient(false); // disallow parsing invalid dates

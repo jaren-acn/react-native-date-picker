@@ -1,6 +1,11 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.icu.util.Calendar;
+import android.icu.util.IslamicCalendar;
+import android.icu.util.ULocale;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 import java.util.*;
 import com.henninghall.date_picker.*;
@@ -14,6 +19,7 @@ public class MonthWheel extends Wheel
         super(picker, id);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
         ArrayList<String> values = new ArrayList<>();
@@ -22,7 +28,7 @@ public class MonthWheel extends Wheel
         cal.set(Calendar.MONTH, 0);
         for (int i = 0; i <= 11; ++i) {
             values.add(getLocaleString(cal));
-            cal.add(Calendar.MONTH, 1);
+            cal.add(IslamicCalendar.MONTH, 1);
         }
         return values;
     }

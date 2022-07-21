@@ -1,6 +1,9 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
+import android.icu.util.Calendar;
 
 import java.util.*;
 import com.henninghall.date_picker.*;
@@ -14,12 +17,16 @@ public class DateWheel extends Wheel
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
-        Calendar cal = Calendar.getInstance();
+       Calendar cal = Calendar.getInstance();
         ArrayList<String> values = new ArrayList<>();
+
+
         cal.set(Calendar.MONTH, 0);
         cal.set(Calendar.DATE, 1);
+
         final int maxDate = 31;
         final int minDate = 1;
         for (int i = minDate; i <= maxDate; ++i) {

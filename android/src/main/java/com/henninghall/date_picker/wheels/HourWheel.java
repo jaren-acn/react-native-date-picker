@@ -1,6 +1,8 @@
 package com.henninghall.date_picker.wheels;
 
 import android.graphics.Paint;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 import com.henninghall.date_picker.HourDisplayBugWorkaround;
 import com.henninghall.date_picker.pickers.Picker;
@@ -19,9 +21,10 @@ public class HourWheel extends Wheel {
         this.hourDisplayAdjustment = new HourDisplayBugWorkaround(state);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
-        Calendar cal = Calendar.getInstance();
+        android.icu.util.Calendar cal = android.icu.util.Calendar.getInstance();
         // Getting the hours from a date that doesn't have daylight saving to be sure
         // cal.add() will work properly.
         cal.set(2000,0,0,0,0,0);
