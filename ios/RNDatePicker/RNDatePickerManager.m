@@ -54,7 +54,7 @@ RCT_CUSTOM_VIEW_PROPERTY(calendar, NSString, DatePicker)
     NSCalendarIdentifier calendarType = NSCalendarIdentifierGregorian;
     NSString* type = json;
     if ([type  isEqual: @"islamic"]) {
-        calendarType = NSCalendarIdentifierIslamic;
+        calendarType = NSCalendarIdentifierIslamicCivil;
     }
     if ([type  isEqual: @"gregorian"]) {
         calendarType = NSCalendarIdentifierGregorian;
