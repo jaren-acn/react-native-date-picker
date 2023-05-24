@@ -38,7 +38,14 @@ public class YearWheel extends Wheel
 
         for (int i = 0; i <= max; ++i) {
             values.add(getLocaleString(cal));
-            cal.add(IslamicCalendar.YEAR, 1);
+
+            if(Objects.equals(getLocaleString(cal), "1348")) {
+                values.add("1349");
+            }
+            if(Objects.equals(getLocaleString(cal), "1449")) {
+                values.add("1450");
+            }
+            cal.add(Calendar.YEAR, 1);
         }
 
         return values;
