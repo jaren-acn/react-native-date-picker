@@ -34,21 +34,12 @@ public class YearWheel extends Wheel
         final int startYear = getStartYear();
         final int endYear = getEndYear();
         int max = endYear - startYear;
-
-        cal.set(IslamicCalendar.YEAR, startYear);
-
-        for (int i = 0; i <= max; ++i) {
-            values.add(getLocaleString(cal));
-
-            if(Objects.equals(getLocaleString(cal), "1348")) {
-                values.add("1349");
-            }
-            if(Objects.equals(getLocaleString(cal), "1449")) {
-                values.add("1450");
-            }
-            cal.add(Calendar.YEAR, 1);
+        cal.set(IslamicCalendar.YEAR,endYear);
+        int lastIslamicYear = Integer.parseInt(getLocaleString(cal));
+                cal.set(IslamicCalendar.YEAR, startYear);
+        for (int i = Integer.parseInt(getLocaleString(cal)); i <= lastIslamicYear; ++i) {
+            values.add(String.valueOf(i));
         }
-
         return values;
     }
 
