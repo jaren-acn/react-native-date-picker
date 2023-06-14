@@ -23,7 +23,7 @@ public class MonthWheel extends Wheel
     @Override
     public ArrayList<String> getValues() {
         ArrayList<String> values = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(state.getLocale());
 
         cal.set(Calendar.MONTH, 0);
         for (int i = 0; i <= 11; ++i) {
