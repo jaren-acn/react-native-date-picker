@@ -21,7 +21,7 @@ public class YearWheel extends Wheel
 
     public YearWheel(final Picker picker, final State id) {
         super(picker, id);
-        this.defaultStartYear = 1900;
+        this.defaultStartYear = 1938;
         this.defaultEndYear = 2100;
     }
 
