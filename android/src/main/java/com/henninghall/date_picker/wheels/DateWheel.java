@@ -20,7 +20,7 @@ public class DateWheel extends Wheel
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getValues() {
-       Calendar cal = Calendar.getInstance();
+       Calendar cal = Calendar.getInstance(state.getLocale());
         ArrayList<String> values = new ArrayList<>();
 
 
